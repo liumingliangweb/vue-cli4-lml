@@ -15,7 +15,7 @@
 
 git clone https://github.com/liumingliangweb/vue-cli4-lml.git
 
-cd vue-h5-template
+cd vue-cli4-lml
 
 npm install
 
@@ -26,9 +26,7 @@ npm run serve
 
 - √ Vue-cli4
 - [√ 配置多环境变量](#env)
-- [√ rem 适配方案](#rem)
-- [√ vm 适配方案](#vm)
-- [√ VantUI 组件按需加载](#vant)
+- [√ elementUI 组件按需加载](#element)
 - [√ Sass 全局样式](#sass)
 - [√ Vuex 状态管理](#vuex)
 - [√ Vue-router](#router)
@@ -111,7 +109,7 @@ module.exports = config
 ```javascript
 // 本地环境配置
 module.exports = {
-  title: 'vue-h5-template',
+  title: 'vue-cli4-template',
   baseUrl: 'http://localhost:9018', // 项目地址
   baseApi: 'https://test.xxx.com/api', // 本地api请求地址
   APPID: 'xxx',
@@ -128,15 +126,6 @@ console.log(baseApi)
 ```
 
 [▲ 回顶部](#top)
-
-### <span id="rem">✅ rem 适配方案 </span>
-
-不用担心，项目已经配置好了 `rem` 适配, 下面仅做介绍：
-
-Vant 中的样式默认使用`px`作为单位，如果需要使用`rem`单位，推荐使用以下两个工具:
-
-- [postcss-pxtorem](https://github.com/cuth/postcss-pxtorem) 是一款 `postcss` 插件，用于将单位转化为 `rem`
-- [lib-flexible](https://github.com/amfe/lib-flexible) 用于设置 `rem` 基准值
 
 ##### PostCSS 配置
 
@@ -298,16 +287,18 @@ module.exports = {
 
 #### 使用组件
 
-项目在 `src/plugins/vant.js` 下统一管理组件，用哪个引入哪个，无需在页面里重复引用
+项目在 `src/plugins/elementUI.js` 下统一管理组件，用哪个引入哪个，无需在页面里重复引用
 
 ```javascript
-// 按需全局引入 vant组件
+// 按需全局引入 element组件
 import Vue from 'vue'
-import { Button, List, Cell, Tabbar, TabbarItem } from 'vant'
+import { Button, Form, FormItem, Input, Table, TableColumn } from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(Button)
-Vue.use(Cell)
-Vue.use(List)
-Vue.use(Tabbar).use(TabbarItem)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+Vue.use(Table).use(TableColumn)
 ```
 
 [▲ 回顶部](#top)
@@ -330,7 +321,7 @@ Vue.use(Tabbar).use(TabbarItem)
 
 #### 目录结构
 
-vue-h5-template 所有全局样式都在 `@/src/assets/css` 目录下设置
+vue-cli4-template 所有全局样式都在 `@/src/assets/css` 目录下设置
 
 ```bash
 ├── assets
@@ -340,15 +331,15 @@ vue-h5-template 所有全局样式都在 `@/src/assets/css` 目录下设置
 │   │   └── variables.scss           # 全局变量
 ```
 
-#### 自定义 vant-ui 样式
+#### 自定义 element-ui 样式
 
-现在我们来说说怎么重写 `vant-ui` 样式。由于 `vant-ui` 的样式我们是在全局引入的，所以你想在某个页面里面覆盖它的样式就不能
-加 `scoped`，但你又想只覆盖这个页面的 `vant` 样式，你就可在它的父级加一个 `class`，用命名空间来解决问题。
+现在我们来说说怎么重写 `element-ui` 样式。由于 `element-ui` 的样式我们是在全局引入的，所以你想在某个页面里面覆盖它的样式
+就不能加 `scoped`，但你又想只覆盖这个页面的 `element` 样式，你就可在它的父级加一个 `class`，用命名空间来解决问题。
 
 ```css
 .about-container {
   /* 你的命名空间 */
-  .van-button {
+  .el-button {
     /* vant-ui 元素*/
     margin-right: 0px;
   }
@@ -520,7 +511,7 @@ export default createRouter()
 ```javascript
 import axios from 'axios'
 import store from '@/store'
-import { Toast } from 'vant'
+import { showLoading, hideLoading } from './loading'
 // 根据环境不同引入不同api地址
 import { baseApi } from '@/config'
 // create an axios instance
@@ -530,16 +521,27 @@ const service = axios.create({
   timeout: 5000 // request timeout
 })
 
-// request 拦截器 request interceptor
+// request拦截器 request interceptor
 service.interceptors.request.use(
   config => {
     // 不传递默认开启loading
     if (!config.hideloading) {
-      // loading
-      Toast.loading({
-        forbidClick: true
-      })
+      showLoading()
     }
+    if (config.method === 'post') {
+      config.data = {
+        ...config.data,
+        _t: Date.parse(new Date()) / 1000
+      }
+      // 请求头转换为表单形式
+      // config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    } else if (config.method === 'get') {
+      config.params = {
+        _t: Date.parse(new Date()) / 1000,
+        ...config.params
+      }
+    }
+    // 接口统一设置token
     if (store.getters.token) {
       config.headers['X-Token'] = ''
     }
@@ -554,8 +556,9 @@ service.interceptors.request.use(
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    Toast.clear()
+    hideLoading()
     const res = response.data
+    // 在此对接口返回的状态码进行处理
     if (res.status && res.status !== 200) {
       // 登录超时,重新登录
       if (res.status === 401) {
@@ -569,11 +572,12 @@ service.interceptors.response.use(
     }
   },
   error => {
-    Toast.clear()
+    hideLoading()
     console.log('err' + error) // for debug
     return Promise.reject(error)
   }
 )
+
 export default service
 ```
 
@@ -1115,26 +1119,3 @@ Vscode setting.json 设置
 ```
 
 [▲ 回顶部](#top)
-
-# 鸣谢 ​
-
-[vue-cli4-config](https://github.com/staven630/vue-cli4-config)  
-[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-
-# 关于我
-
-获取更多技术相关文章，关注公众号”前端女塾“。
-
-回复加群，即可加入”前端仙女群“
-
- <p>
-  <img src="./static/gognzhonghao.jpg" width="256" style="display:inline;">
-</p>
-
-扫描添加下方的微信并备注 Sol 加交流群，交流学习，及时获取代码最新动态。
-
-<p>
-  <img src="./static/me.png" width="256" style="display:inline;">
-</p>
- 
-如果对你有帮助送我一颗小星星（づ￣3￣）づ╭❤～
