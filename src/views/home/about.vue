@@ -12,7 +12,7 @@
         <div class="item">项目作者: LML</div>
         <div class="item"></div>
         <div class="item">
-          vuex值得操作: {{ userName }}
+          vuex值的操作: {{ userName }}
           <el-button v-if="userName == ''" type="warning" size="small" @click="doDispatch">快点我~</el-button>
         </div>
         <div class="goback">
