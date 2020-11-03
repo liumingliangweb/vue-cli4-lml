@@ -7,7 +7,7 @@
         <div class="demo-home__title">VUE CLI4开发模板</div>
         <div class="item">
           项目地址:
-          <a href="https://github.com/sunniejs/vue-h5-template">https://github.com/sunniejs/vue-h5-template</a>
+          <a href="https://github.com/liumingliangweb/vue-cli4-lml">https://github.com/liumingliangweb/vue-cli4-lml</a>
         </div>
         <div class="item">项目作者: LML</div>
         <div class="item"></div>
@@ -53,7 +53,7 @@ export default {
       this.$store.dispatch('setUserName', '学习积累')
     },
     goGithub(index) {
-      window.location.href = 'https://github.com/sunniejs/vue-h5-template'
+      window.location.href = 'https://github.com/liumingliangweb/vue-cli4-lml'
     },
     goback() {
       this.$router.back()

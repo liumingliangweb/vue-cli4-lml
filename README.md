@@ -1,7 +1,6 @@
 # vue-pc-template
 
-基于 vue-cli4.0 + webpack 4 + element ui + sass + axios 封装，构建PC端模板脚手架
-
+基于 vue-cli4.0 + webpack 4 + element ui + sass + axios 封装，构建 PC 端模板脚手架
 
 <p>
   <img src="./static/demo.png" width="320" style="display:inline;">
@@ -18,7 +17,7 @@
 
 ```bash
 
-git clone https://github.com/sunniejs/vue-h5-template.git
+git clone https://github.com/liumingliangweb/vue-cli4-lml.git
 
 cd vue-h5-template
 
