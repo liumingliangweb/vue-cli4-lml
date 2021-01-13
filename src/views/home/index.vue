@@ -8,7 +8,11 @@
       </h2>
     </div>
     <div class="content">
-      <el-form :label-position="labelPosition" label-width="120px" :model="formLabelAlign">
+      <el-form
+        :label-position="labelPosition"
+        label-width="120px"
+        :model="formLabelAlign"
+      >
         <el-form-item label="名称">
           <el-input v-model="formLabelAlign.name"></el-input>
         </el-form-item>
@@ -21,7 +25,10 @@
       </el-form>
     </div>
     <div style="text-align:center">
-      <el-button type="primary" @click="next">跳转页面</el-button>
+      <el-button
+        type="primary"
+        @click="next"
+      >跳转页面</el-button>
     </div>
   </div>
 </template>

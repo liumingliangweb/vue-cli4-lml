@@ -39,7 +39,7 @@ const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 module.exports = {
   // publicPath: './', // 署应用包时的基本 URL。 vue-router hash 模式使用
-  publicPath: '/app/', // 署应用包时的基本 URL。 vue-router history模式使用
+  publicPath: './', // 署应用包时的基本 URL。 vue-router history模式使用
   outputDir: 'dist', //  生产环境构建文件的目录
   assetsDir: 'static', //  outputDir的静态资源(js、css、img、fonts)目录
   lintOnSave: !IS_PROD,
@@ -51,18 +51,31 @@ module.exports = {
       //  当出现编译器错误或警告时，在浏览器中显示全屏覆盖层
       warnings: false,
       errors: true
+    },
+    proxy: {
+      // 配置跨域
+      '/api': {
+        target: 'https://test.xxx.com',
+        // ws:true,
+        changOrigin: true,
+        // pathRewrite: {
+        //   '^/api': '/'
+        // },
+        secure: false,
+        // 注：ie下设置localhost的cookie无效，改为空，与网页域名一致，待测试
+        cookieDomainRewrite: {
+          'xxx.cn': 'localhost'
+        },
+        onProxyReq(proxyReq, req, res) {
+          proxyReq.setHeader('referer', 'https://test.xxx.cn')
+          proxyReq.setHeader('host', 'test.xxx.cn')
+          proxyReq.setHeader('origin', 'test.xxx.cn')
+          proxyReq.setHeader('domain', 'test.xxx.cn')
+          // console.log('proxyReq', proxyReq)
+        }
+        // logLevel: 'debug'
+      }
     }
-    // proxy: {
-    //   //配置跨域
-    //   '/api': {
-    //       target: "https://test.xxx.com",
-    //       // ws:true,
-    //       changOrigin:true,
-    //       pathRewrite:{
-    //           '^/api':'/'
-    //       }
-    //   }
-    // }
   },
   css: {
     extract: IS_PROD, // 是否将组件中的 CSS 提取至一个独立的 CSS 文件中 (而不是动态注入到 JavaScript 中的 inline 代码)。

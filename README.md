@@ -284,7 +284,7 @@ Vue.prototype.$cdn = $cdn
   .logo {
     width: 120px;
     height: 120px;
-    background: url($cdn + '/weapp/logo.png') center / contain no-repeat;
+    background: url($cdn+'/weapp/logo.png') center / contain no-repeat;
   }
 </style>
 ```
@@ -863,14 +863,14 @@ VScode （版本 1.47.3）安装 `eslint` `prettier` `vetur` 插件 `.vue` 文�
 Vscode setting.json 设置
 
 ```bash
-    {
+{
   // 将设置放入此文件中以覆盖默认设置
   "files.autoSave": "off",
   // 控制字体系列。
   "editor.fontFamily": "Consolas, 'Courier New', monospace,'宋体'",
   "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
   // 以像素为单位控制字号。
-  "editor.fontSize": 16,
+  "editor.fontSize": 15,
   // 控制选取范围是否有圆角
   "editor.roundedSelection": false,
   // 建议小组件的字号
@@ -929,20 +929,20 @@ Vscode setting.json 设置
   "vetur.format.defaultFormatter.sass": "sass-formatter",
   "vetur.format.defaultFormatter.ts": "prettier",
   "vetur.format.defaultFormatterOptions": {
-    "js-beautify-html": {
-      "wrap_attributes": "aligned-multiple", // 超过150折行
-      "wrap-line-length": 150
-    },
+    // "js-beautify-html": {
+    //   "wrap_attributes": "aligned-multiple", // 超过150折行
+    //   "wrap-line-length": 150
+    // },
     // #vue组件中html代码格式化样式
     "prettier": {
-      "printWidth": 120,
+      // "printWidth": 80,
       "tabWidth": 2,
       "singleQuote": false,
       "trailingComma": "none",
       "semi": false,
-      "wrap_line_length": 120,
-      "wrap_attributes": "aligned-multiple", // 超过150折行
-      "proseWrap": "always",
+      // "wrap_line_length": 80,
+      // "wrap_attributes": "aligned-multiple", // 超过150折行
+      "proseWrap": "never",
       "arrowParens": "avoid",
       "bracketSpacing": true,
       "jsxBracketSameLine": true,
@@ -993,6 +993,7 @@ Vscode setting.json 设置
   "javascript.implicitProjectConfig.experimentalDecorators": true,
   "editor.maxTokenizationLineLength": 200000
 }
+
 
 ```
 

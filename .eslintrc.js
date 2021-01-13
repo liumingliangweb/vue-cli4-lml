@@ -8,10 +8,11 @@ module.exports = {
     parser: 'babel-eslint'
   },
   rules: {
+    // html  属性单行显示
     'vue/max-attributes-per-line': [
-      2,
+      'error',
       {
-        singleline: 10,
+        singleline: 1,
         multiline: {
           max: 1,
           allowFirstLine: false
@@ -249,13 +250,13 @@ module.exports = {
     yoda: [2, 'never'],
     'prefer-const': 2,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'object-curly-spacing': [
-      2,
-      'always',
-      {
-        objectsInObjects: false
-      }
-    ],
+    // 'object-curly-spacing': [
+    //   'error',
+    //   'never',
+    //   {
+    //     objectsInObjects: false
+    //   }
+    // ],
     'array-bracket-spacing': [2, 'never']
   }
 }
